@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f7fc">
+<meta name="description" content="MeCo-Hi: Enhancing LLM-Empowered Multi-Robot Collaboration via Hierarchical Similarity">
+<title>MeCo-Hi: Enhancing LLM-Empowered Multi-Robot Collaboration via Hierarchical Similarity</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%235b5ab3'/%3E%3Cpath d='M20 17v30M44 17v30M20 32h24' stroke='white' stroke-width='7'/%3E%3C/svg%3E">
+<style>@font-face{font-family:Lato;font-style:normal;font-weight:400;font-display:swap;src:url('assets/fonts/Lato-Regular.ttf') format('truetype')}
+@font-face{font-family:Lato;font-style:normal;font-weight:700;font-display:swap;src:url('assets/fonts/Lato-Bold.ttf') format('truetype')}
+:root{--ink:#252b40;--body:#4a5064;--accent:#5b5ab3;--accent-dark:#444391;--line:#e0e3ee;--soft:#f5f6fb;--tint:#eeeff9;--white:#fff}
+*,*::before,*::after{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:var(--white);color:var(--ink);font-family:Lato,Arial,sans-serif;font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;touch-action:manipulation}button,a{-webkit-tap-highlight-color:transparent}button:not(:disabled){cursor:pointer}button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid #8781c9;outline-offset:4px}button:focus:not(:focus-visible){outline:none}img{display:block;max-width:100%;height:auto}h1,h2,h3,p,figure,blockquote{margin:0}[hidden]{display:none!important}::selection{background:#dfdef5}.container{width:min(1160px,calc(100% - 64px));margin:auto}.skip-link{position:fixed;top:-100px;left:15px;z-index:100;padding:8px 16px;background:var(--accent);color:white;border-radius:5px}.skip-link:focus{top:10px}
+.site-header{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line);background:#ffffffed;backdrop-filter:blur(16px)}.nav-inner{height:68px;display:flex;justify-content:space-between;align-items:center;gap:30px}.brand{color:var(--accent);font-size:22px;font-weight:700;letter-spacing:-.6px}.nav-links{display:flex;gap:30px}.nav-links a{font-size:13px;color:#687086;position:relative;padding:20px 0}.nav-links a:hover,.nav-links a[aria-current]{color:var(--accent)}.nav-links a[aria-current]::after{content:'';position:absolute;bottom:13px;left:0;right:0;height:2px;background:var(--accent)}
+.hero{padding:64px 0 0;background:linear-gradient(180deg,#f5f6fc 0%,#fff 85%)}h1{max-width:1080px;margin:auto;text-align:center;font-size:48px;line-height:1.18;letter-spacing:-1.65px;font-weight:700;text-wrap:balance}.project-name{color:var(--accent);white-space:nowrap}.authors{margin:27px auto 0;max-width:1080px;text-align:center;font-size:17px;line-height:2.1;color:#3a4056}.authors span{white-space:nowrap}.authors sup{font-size:10px;color:var(--accent);padding-left:3px}.affiliations{max-width:990px;margin:12px auto 0;text-align:center;font-size:14px;line-height:1.9;color:#73798b}.affiliations sup{font-size:10px;color:var(--accent)}.publication-links{display:flex;justify-content:center;gap:12px;margin:25px 0 38px}.resource-link{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:var(--accent);color:white;border:1px solid var(--accent);border-radius:7px;padding:8px 23px;min-width:112px;font-size:13px;font-weight:700;line-height:1.65;box-shadow:0 3px 9px #5b5ab30d}.resource-link[data-resource=code]{color:var(--accent);background:#fff}.resource-link[aria-disabled=true]{cursor:default}.resource-link svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.research-figure{border:1px solid var(--line);border-radius:10px;padding:19px;background:white;overflow:hidden}.figure-button{display:block;position:relative;padding:0;border:0;background:white;width:100%}.figure-button img{width:100%;background:white}.expand-icon{position:absolute;right:0;bottom:0;display:flex;align-items:center;justify-content:center;width:28px;height:28px;font-size:19px;background:#fffefc;border:1px solid #e2e4ef;border-radius:5px;color:var(--accent);box-shadow:0 2px 6px #24284709}.figure-button:hover .expand-icon{background:var(--accent);border-color:var(--accent);color:#fff}.motivation-figure{max-width:1080px;margin:auto;padding:23px;border-color:#dcdfee;box-shadow:0 12px 35px #34335908}
+.section{padding:62px 0}h2{text-align:center;font-size:33px;line-height:1.25;letter-spacing:-.7px;margin-bottom:28px;font-weight:700}h2::after{content:'';display:block;width:37px;height:3px;border-radius:3px;background:#a4a0d4;margin:15px auto 0}h3{font-size:23px;line-height:1.35;letter-spacing:-.3px;font-weight:700;margin-bottom:19px}.prose{max-width:980px;margin:0 auto;color:var(--body);line-height:1.9;font-size:15px}.prose p+p{margin-top:14px}.prose strong{color:#363b55}.abstract-section{padding-top:48px}.abstract-section .prose{width:100%;max-width:1060px}.abstract-section .prose p{text-wrap:pretty}.quotes p+p{margin-top:3px}.benchmark-section{background:var(--soft);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.benchmark-section .prose{max-width:none}.task-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:26px}.task-card{border:1px solid #dce0ec;border-radius:9px;overflow:hidden;background:#fff;box-shadow:0 4px 12px #252b4004}.video-wrap{aspect-ratio:1;position:relative;background:#203447}.video-wrap video{display:block;width:100%;height:100%;object-fit:contain}.video-play{position:absolute;inset:0;border:0;background:transparent;display:flex;align-items:center;justify-content:center}.video-play>span{width:48px;height:48px;background:#fffffff0;border-radius:50%;display:flex;justify-content:center;align-items:center;padding-left:3px;color:var(--accent);font-size:15px;box-shadow:0 4px 18px #17203126;transition:transform .2s}.video-play:hover>span{transform:scale(1.09)}.task-card figcaption{padding:12px 16px;text-align:center;font-size:15px;font-weight:700;letter-spacing:-.1px}.task-letter{font-size:12px;font-weight:400;color:#7d8096;margin-right:4px}.video-status:empty{display:none}.video-status{padding:10px 15px;font-size:12px;color:#97432e}.similar-tasks{margin-top:52px;padding-top:40px;border-top:1px solid var(--line)}.comparison-shell{border:1px solid #dce0ec;border-radius:10px;overflow:hidden;background:white;margin-bottom:27px}.comparison-tabs{display:flex;flex-wrap:wrap;gap:6px;padding:13px 18px;border-bottom:1px solid var(--line);background:#fbfbfe}.comparison-tabs button{border:0;background:transparent;color:#6a6e83;border-radius:5px;padding:8px 18px;font-size:12px;font-weight:700}.comparison-tabs button[aria-selected=true]{background:var(--accent);color:#fff}.comparison-tabs button:hover:not([aria-selected=true]){background:var(--tint)}.comparison-panel{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:21px}.comparison-label{text-align:center;font-size:12px;color:#6c7085;margin-bottom:10px}.comparison-item .research-figure{padding:8px;border-radius:6px}.comparison-item .figure-button{aspect-ratio:1.8;display:flex;align-items:center;justify-content:center}.comparison-item img{max-height:100%;object-fit:contain}.comparison-item .expand-icon{font-size:15px;width:23px;height:23px}.source-list{padding-left:24px;margin:15px 0 17px}.source-list li{padding-left:4px;margin-bottom:13px}.source-list li::marker{color:var(--accent)}math{font-family:'Cambria Math','STIX Two Math',serif;font-size:1.08em;margin-inline:2px}.method-section .research-figure{margin-bottom:29px}.method-section .prose{width:100%;max-width:none}.method-section .prose p{text-wrap:pretty}.keep-together{white-space:nowrap}.evaluation-section{background:#f8f9fc;border-top:1px solid var(--line)}
+.table-scroll{overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #dce0ed;border-radius:9px;background:#fff;margin:0 0 26px;scrollbar-color:#bfbedc #f4f4fb;scrollbar-width:thin}.results-table{width:100%;min-width:1090px;border-collapse:separate;border-spacing:0;text-align:center;font-size:12px;line-height:1.7;font-variant-numeric:tabular-nums;color:#383d53}.results-table caption{text-align:left;padding:17px 20px;font-size:14px;font-weight:700;color:var(--ink);caption-side:top;background:#fff}.results-table th,.results-table td{padding:8px 9px;white-space:nowrap;vertical-align:middle}.results-table thead{color:#4c4f72}.results-table thead th{border-bottom:1px solid #dfe1ef;background:#f1f1f9;font-weight:700}.results-table thead tr:nth-child(2) th{font-size:10px;padding:8px 7px;font-weight:400}.results-table tbody th{font-weight:700;color:#4a4f64;text-align:left}.results-table tbody th[scope=rowgroup]{padding-left:17px;min-width:114px;white-space:normal;line-height:1.5}.results-table tbody th[scope=row]{font-size:10px;font-weight:400;color:#777d91;min-width:88px}.results-table td.enhanced,.results-table th.enhanced{background:#f5f4fc;color:#4c478e}.results-table strong{font-weight:700}.results-table tbody tr:nth-child(2n) th,.results-table tbody tr:nth-child(2n) td{padding-top:0;padding-bottom:10px;border-bottom:1px solid #e8eaf2}.results-table tbody tr:nth-child(2n+1) td,.results-table tbody tr:nth-child(2n+1) th[scope=row]{padding-top:10px;padding-bottom:2px}.results-table tbody th[rowspan]{border-bottom:1px solid #e8eaf2}.results-table td{border-left:1px solid #f2f2f7}.s23-title{margin-top:40px}.evaluation-section .research-figure{padding:24px}.evaluation-section{padding-bottom:72px}
+.figure-dialog{width:min(1450px,96vw);max-width:96vw;max-height:94vh;padding:0;border:1px solid #d6d8e7;border-radius:10px;background:#fff;color:var(--ink);box-shadow:0 25px 90px #23244355}.figure-dialog::backdrop{background:#1d223bbd;backdrop-filter:blur(4px)}.dialog-toolbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:12px 18px;border-bottom:1px solid var(--line)}#dialog-title{font-size:13px;line-height:1.4}.dialog-actions{display:flex;gap:8px;flex-shrink:0}.dialog-actions button{border:1px solid #dcddec;background:#f3f3fa;border-radius:5px;padding:5px 11px;font-size:11px}.dialog-actions .close-dialog{font-size:22px;line-height:1.3;padding:1px 10px}.dialog-stage{max-height:calc(94vh - 68px);padding:20px;overflow:auto;overscroll-behavior:contain}.dialog-stage img{width:auto;max-width:100%;max-height:calc(94vh - 108px);margin:auto;object-fit:contain}.dialog-stage.actual-size img{max-width:none;max-height:none;margin:0}
+@media(max-width:1000px){h1{font-size:42px}.task-grid{gap:17px}.comparison-tabs button{padding:8px 15px}.results-table{font-size:12px}.prose{font-size:14px}}
+@media(max-width:760px){html{scroll-padding-top:80px}.container{width:calc(100% - 36px)}.nav-inner{height:61px;gap:15px}.brand{font-size:21px}.nav-links{gap:18px}.nav-links a{font-size:11px;padding:18px 0}.nav-links a[aria-current]::after{bottom:11px}.hero{padding-top:43px}h1{font-size:35px;letter-spacing:-1px;line-height:1.2}.authors{font-size:15px;margin-top:22px}.affiliations{font-size:13px;line-height:1.85}.publication-links{margin:23px 0 29px}.motivation-figure{padding:15px}.section{padding:45px 0}h2{font-size:29px;margin-bottom:24px}h3{font-size:21px}.prose{font-size:14px;line-height:1.9}.task-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.task-card figcaption{font-size:14px;padding:11px 9px}.similar-tasks{margin-top:35px;padding-top:30px}.comparison-panel{gap:11px;padding:15px}.comparison-tabs{gap:5px;padding:10px}.comparison-tabs button{font-size:11px;padding:7px 12px}.comparison-label{font-size:11px}.comparison-item .research-figure{padding:5px}.source-list{padding-left:20px}.research-figure{padding:13px}.method-section .research-figure{margin-bottom:23px}.evaluation-section .research-figure{padding:13px}.results-table caption{padding:14px 17px;font-size:13px}.table-scroll{margin-bottom:20px}.dialog-toolbar{padding:10px 12px}.dialog-stage{padding:10px}}
+@media(max-width:480px){.container{width:calc(100% - 30px)}.nav-inner{height:58px;gap:13px}.brand{font-size:19px}.nav-links{gap:12px}.nav-links a{font-size:10px}.hero{padding-top:34px}h1{font-size:29px;letter-spacing:-.6px}.authors{font-size:14px;line-height:2.1}.authors sup{font-size:9px}.affiliations{font-size:12px;margin-top:13px}.publication-links{gap:10px}.resource-link{font-size:12px;padding:8px 18px;min-width:101px}.motivation-figure{padding:10px;border-radius:7px}.expand-icon{width:24px;height:24px;font-size:17px}.section{padding:36px 0}h2{font-size:27px}h3{font-size:20px}.prose{font-size:13px;line-height:1.92}.task-grid{grid-template-columns:1fr;gap:18px;margin-top:21px}.task-card figcaption{font-size:16px;padding:11px}.task-letter{font-size:12px}.video-play>span{width:50px;height:50px}.comparison-panel{grid-template-columns:1fr;gap:17px}.comparison-tabs{gap:2px;padding:8px}.comparison-tabs button{font-size:9px;padding:8px;flex:1;white-space:nowrap}.comparison-label{font-size:12px;margin-bottom:7px}.comparison-item .research-figure{padding:8px}.research-figure{border-radius:7px;padding:9px}.method-section .figure-button{padding-bottom:18px}.results-table{font-size:12px;min-width:1060px}.table-scroll{border-radius:7px}.s23-title{margin-top:30px}.dialog-toolbar{gap:10px}#dialog-title{font-size:11px}.dialog-actions button{font-size:10px;padding:5px 8px}.evaluation-section{padding-bottom:45px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+@media print{.site-header,.publication-links,.expand-icon,.video-play,.figure-dialog{display:none!important}.container{width:100%}.section,.hero{padding:20px 0}h1{font-size:28px}h2{font-size:24px}.comparison-tabs{display:none}.comparison-panel[hidden]{display:grid!important}.task-grid{grid-template-columns:repeat(3,1fr)}.table-scroll{overflow:visible}.results-table{min-width:0;font-size:8px}.results-table th,.results-table td{padding:3px}.research-figure,.task-card,}
+
+.comparison-note{grid-column:1/-1;margin:0;font-size:12px;line-height:1.6;color:#6c7085}
+.evaluation-intro{max-width:none;margin-bottom:26px}.metric-note{font-size:13px}.figure-caption{font-size:12px;line-height:1.7;color:#6c7085;margin:12px 0 28px}.method-section .research-figure{margin-bottom:0}.paper-experiment{margin-top:18px;border:1px solid var(--line);border-radius:9px;background:#fff}.paper-experiment>summary{cursor:pointer;font-size:17px;font-weight:700;padding:20px 24px;color:var(--ink)}.paper-experiment[open]>summary{border-bottom:1px solid var(--line)}.experiment-body{padding:24px}.experiment-body>.prose{max-width:none;margin-bottom:24px}.experiment-body .figure-caption:last-child{margin-bottom:0}.figure-caption a,.metric-note a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+@media(max-width:760px){.paper-experiment>summary{font-size:15px;padding:16px}.experiment-body{padding:15px}.metric-note{font-size:12px}.nav-inner{gap:10px}.nav-links{gap:12px}.brand{white-space:nowrap}}
+@media(max-width:480px){.nav-inner{flex-wrap:wrap;height:auto;padding-top:9px;gap:0}.brand{width:100%;text-align:center}.nav-links{width:100%;justify-content:center;gap:16px}.nav-links a{padding:9px 0}.nav-links a[aria-current]::after{bottom:4px}html{scroll-padding-top:100px}.comparison-tabs button{flex:0 1 auto}}
+
+/* Paired quotations connect the abstract to the reuse principle. */
+.abstract-quotes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));max-width:1060px;margin:34px auto 0;padding:30px 0;border-top:1px solid #dedeee;border-bottom:1px solid #dedeee;background:linear-gradient(90deg,#faf9fd,#f5f4fb,#faf9fd)}
+.abstract-quote{margin:0;padding:4px 30px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:13px}
+.abstract-quote+.abstract-quote{border-left:1px solid #dbd8ec}
+.abstract-quote blockquote{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:21px;font-style:italic;line-height:1.6;color:#474361;text-wrap:balance}
+.abstract-quote figcaption{font-size:12px;letter-spacing:.5px;color:#68657d}
+.abstract-quote:last-child blockquote{color:#514b96}
+.abstract-quote:last-child figcaption{color:#514b96;font-weight:700}
+@media(max-width:760px){.abstract-quotes{grid-template-columns:1fr;margin-top:26px;padding:5px 24px}.abstract-quote{padding:23px 0;gap:10px}.abstract-quote+.abstract-quote{border-left:0;border-top:1px solid #dbd8ec}.abstract-quote blockquote{font-size:19px}.abstract-quote figcaption{font-size:11px}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="container nav-inner"><a class="brand" href="#top">MeCo-Hi</a><nav class="nav-links" aria-label="Sections"><a href="#abstract">Abstract</a><a href="#benchmark">MeCoBench</a><a href="#method">Method</a><a href="#evaluation">Evaluation</a></nav></div></header>
+<main id="main">
+<section class="hero" id="top"><div class="container">
+  <h1><span class="project-name">MeCo-Hi:</span> Enhancing LLM-Empowered Multi-Robot Collaboration via Hierarchical Similarity</h1>
+  <div class="authors"><span>Baiqing Wang<sup>a</sup></span>, <span>Helei Cui<sup>a</sup></span>, <span>Bo Zhang<sup>a</sup></span>, <span>Jingqi Liu<sup>a</sup></span>, <span>Xiaolong Zheng<sup>b</sup></span>, <span>Bin Guo<sup>a</sup></span>, <span>Zhiwen Yu<sup>c, a</sup></span></div>
+  <div class="affiliations"><p><sup>a</sup> School of Computer Science, Northwestern Polytechnical University, Xi’an, China</p><p><sup>b</sup> School of Computer Science, Beijing University of Posts and Telecommunications, Beijing, China</p><p><sup>c</sup> College of Computer Science and Technology, Harbin Engineering University, Harbin, China</p></div>
+  <div class="publication-links">
+    <span class="resource-link" aria-disabled="true" data-resource="paper"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7zM14 3v5h4M10 12h5M10 16h5"/></svg>Paper</span>
+    <a class="resource-link" href="https://github.com/TomWang-NPU/MeCo-Hi" target="_blank" rel="noopener noreferrer" data-resource="code"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-14-2 20"/></svg>Code</a>
+  </div>
+</div></section>
+<section class="section abstract-section" id="abstract"><div class="container">
+  <h2>Abstract</h2>
+  <div class="prose" data-source="abstract"><p>Multi-robot systems have been widely deployed in real-world applications. Large language models (LLMs) enable multi-robot collaboration without task-specific training. However, most existing LLM-empowered approaches remain inefficient: when confronted with identical or similar tasks, they must replan from scratch because they overlook task-level similarities. Caching solved tasks and reusing their plans (i.e., memoization) can remove this redundancy. Yet identifying and reusing solutions for similar but not identical tasks is nontrivial. The difficulty is that multi-robot planning is hierarchical. The reusability of high-level task decision-making and low-level motion planning depends on task similarity at different granularities. We therefore propose MeCo-Hi, a framework that aligns task similarity with this hierarchy. At the high level, scene similarity compares attributed task graphs via the Fused Gromov–Wasserstein distance. At the low level, trajectory similarity measures how transferable cached trajectories are to the current environment. We further explore the relationship between the two and find that scene similarity is a reliable prior for trajectory similarity, making coarse-to-fine retrieval efficient. We also design a similar motion planner that transfers the retrieved plan at both levels, enabling effective plan reuse without re-invoking LLMs. For better evaluation, we extend MeCoBench with three new categories of task scenarios. Experimental results show that MeCo-Hi substantially reduces planning costs and improves success rates compared with <span class="keep-together">state-of-the-art approaches.</span></p></div>
+  <div class="abstract-quotes" aria-label="From reflection to reuse"><figure class="abstract-quote"><blockquote><p>“Review the old to understand the new.”</p></blockquote><figcaption>(Confucius)</figcaption></figure><figure class="abstract-quote"><blockquote><p>“Reuse old plans to solve the new similar task.”</p></blockquote><figcaption>(MeCo-Hi)</figcaption></figure></div>
+</div></section>
+<section class="section benchmark-section" id="benchmark"><div class="container">
+  <h2>The Extended MeCoBench</h2>
+  <h3>Nine Tasks</h3>
+  <div class="prose" data-source="nine-tasks"><p>The extended MeCoBench uses a unified scene-similarity measure across nine tasks. It retains the six tasks of RoCoBench and adds Mixed Parts, Install Window, and Kitting, covering capability-dependent task allocation, cooperative transport by mobile robots, and object rearrangement with occupancy dependencies.</p></div>
+  <div class="task-grid"><figure class="task-card"><div class="video-wrap"><video id="video-sweep-floor" src="assets/videos/sweep-floor.mp4" poster="assets/posters/sweep-floor.webp" preload="none" autoplay loop muted playsinline controls aria-label="Sweep Floor"></video><button class="video-play" type="button" data-play="sweep-floor" aria-label="Play Sweep Floor" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(a)</span> Sweep Floor</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-pack-grocery" src="assets/videos/pack-grocery.mp4" poster="assets/posters/pack-grocery.webp" preload="none" autoplay loop muted playsinline controls aria-label="Pack Grocery"></video><button class="video-play" type="button" data-play="pack-grocery" aria-label="Play Pack Grocery" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(b)</span> Pack Grocery</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-move-rope" src="assets/videos/move-rope.mp4" poster="assets/posters/move-rope.webp" preload="none" autoplay loop muted playsinline controls aria-label="Move Rope"></video><button class="video-play" type="button" data-play="move-rope" aria-label="Play Move Rope" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(c)</span> Move Rope</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-arrange-cabinet" src="assets/videos/arrange-cabinet.mp4" poster="assets/posters/arrange-cabinet.webp" preload="none" autoplay loop muted playsinline controls aria-label="Arrange Cabinet"></video><button class="video-play" type="button" data-play="arrange-cabinet" aria-label="Play Arrange Cabinet" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(d)</span> Arrange Cabinet</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-make-sandwich" src="assets/videos/make-sandwich.mp4" poster="assets/posters/make-sandwich.webp" preload="none" autoplay loop muted playsinline controls aria-label="Make Sandwich"></video><button class="video-play" type="button" data-play="make-sandwich" aria-label="Play Make Sandwich" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(e)</span> Make Sandwich</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-sort-cubes" src="assets/videos/sort-cubes.mp4" poster="assets/posters/sort-cubes.webp" preload="none" autoplay loop muted playsinline controls aria-label="Sort Cubes"></video><button class="video-play" type="button" data-play="sort-cubes" aria-label="Play Sort Cubes" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(f)</span> Sort Cubes</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-mixed-parts" src="assets/videos/mixed-parts.mp4" poster="assets/posters/mixed-parts.webp" preload="none" autoplay loop muted playsinline controls aria-label="Mixed Parts"></video><button class="video-play" type="button" data-play="mixed-parts" aria-label="Play Mixed Parts" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(g)</span> Mixed Parts</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-install-glass" src="assets/videos/install-glass.mp4" poster="assets/posters/install-glass.webp" preload="none" autoplay loop muted playsinline controls aria-label="Install Window"></video><button class="video-play" type="button" data-play="install-glass" aria-label="Play Install Window" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(h)</span> Install Window</figcaption><p class="video-status" role="status"></p></figure>
+<figure class="task-card"><div class="video-wrap"><video id="video-kitting" src="assets/videos/kitting.mp4" poster="assets/posters/kitting.webp" preload="none" autoplay loop muted playsinline controls aria-label="Kitting"></video><button class="video-play" type="button" data-play="kitting" aria-label="Play Kitting" hidden><span aria-hidden="true">▶</span></button></div><figcaption><span class="task-letter">(i)</span> Kitting</figcaption><p class="video-status" role="status"></p></figure></div>
+  <div class="similar-tasks"><h3>Similar Tasks</h3>
+    <div class="comparison-shell"><div class="comparison-tabs" role="tablist" aria-label="Similar Tasks"><button type="button" id="tab-pack-grocery" role="tab" aria-selected="true" aria-controls="panel-pack-grocery" tabindex="0">Pack Grocery</button><button type="button" id="tab-move-rope" role="tab" aria-selected="false" aria-controls="panel-move-rope" tabindex="-1">Move Rope</button><button type="button" id="tab-make-sandwich" role="tab" aria-selected="false" aria-controls="panel-make-sandwich" tabindex="-1">Make Sandwich</button><button type="button" id="tab-sort-cubes" role="tab" aria-selected="false" aria-controls="panel-sort-cubes" tabindex="-1">Sort Cubes</button><button type="button" id="tab-install-glass" role="tab" aria-selected="false" aria-controls="panel-install-glass" tabindex="-1">Install Window</button><button type="button" id="tab-kitting" role="tab" aria-selected="false" aria-controls="panel-kitting" tabindex="-1">Kitting</button><button type="button" id="tab-mixed-parts" role="tab" aria-selected="false" aria-controls="panel-mixed-parts" tabindex="-1">Mixed Parts</button></div><div class="comparison-panel" id="panel-pack-grocery" role="tabpanel" aria-labelledby="tab-pack-grocery" tabindex="0" ><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Pack Grocery: Initial task"><img src="assets/similarity/pack-grocery-reference.webp" width="1200" height="583" alt="Pack Grocery: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Pack Grocery: Similar task"><img src="assets/similarity/pack-grocery-similar.webp" width="1200" height="583" alt="Pack Grocery: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Dissimilar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Pack Grocery: Dissimilar task"><img src="assets/similarity/pack-grocery-dissimilar.webp" width="1200" height="584" alt="Pack Grocery: Dissimilar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div></div><div class="comparison-panel" id="panel-move-rope" role="tabpanel" aria-labelledby="tab-move-rope" tabindex="0" hidden><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Move Rope: Initial task"><img src="assets/similarity/move-rope-reference.webp" width="1200" height="585" alt="Move Rope: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Move Rope: Similar task"><img src="assets/similarity/move-rope-similar.webp" width="1200" height="584" alt="Move Rope: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Dissimilar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Move Rope: Dissimilar task"><img src="assets/similarity/move-rope-dissimilar.webp" width="1200" height="583" alt="Move Rope: Dissimilar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div></div><div class="comparison-panel" id="panel-make-sandwich" role="tabpanel" aria-labelledby="tab-make-sandwich" tabindex="0" hidden><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Make Sandwich: Initial task"><img src="assets/similarity/make-sandwich-reference.webp" width="1200" height="635" alt="Make Sandwich: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Make Sandwich: Similar task"><img src="assets/similarity/make-sandwich-similar.webp" width="1200" height="637" alt="Make Sandwich: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Dissimilar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Make Sandwich: Dissimilar task"><img src="assets/similarity/make-sandwich-dissimilar.webp" width="1200" height="636" alt="Make Sandwich: Dissimilar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div></div><div class="comparison-panel" id="panel-sort-cubes" role="tabpanel" aria-labelledby="tab-sort-cubes" tabindex="0" hidden><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Sort Cubes: Initial task"><img src="assets/similarity/sort-cubes-reference.webp" width="1200" height="702" alt="Sort Cubes: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Sort Cubes: Similar task"><img src="assets/similarity/sort-cubes-similar.webp" width="1200" height="701" alt="Sort Cubes: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Dissimilar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Sort Cubes: Dissimilar task"><img src="assets/similarity/sort-cubes-dissimilar.webp" width="1200" height="701" alt="Sort Cubes: Dissimilar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div></div><div class="comparison-panel" id="panel-install-glass" role="tabpanel" aria-labelledby="tab-install-glass" tabindex="0" hidden><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Install Window: Initial task"><img src="assets/similarity/install-glass-reference.png" width="1800" height="1350" alt="Install Window: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Install Window: Similar task"><img src="assets/similarity/install-glass-similar.png" width="1800" height="1350" alt="Install Window: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Other initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Install Window: Other initial task"><img src="assets/similarity/install-glass-dissimilar.png" width="1800" height="1350" alt="Install Window: Other initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><p class="comparison-note">The available recorded layouts vary only slightly. The third scene is another initial task, not a verified dissimilar task.</p></div><div class="comparison-panel" id="panel-kitting" role="tabpanel" aria-labelledby="tab-kitting" tabindex="0" hidden><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Kitting: Initial task"><img src="assets/similarity/kitting-reference.png" width="1800" height="1350" alt="Kitting: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Kitting: Similar task"><img src="assets/similarity/kitting-similar.png" width="1800" height="1350" alt="Kitting: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Dissimilar task (simulation example)</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Kitting: Dissimilar task (simulation example)"><img src="assets/similarity/kitting-dissimilar.png" width="1800" height="1350" alt="Kitting: Dissimilar task (simulation example)" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><p class="comparison-note">Generated simulation example: all six parts occupy different compatible bays. This layout illustrates a different initial task and is not a recorded experiment.</p></div><div class="comparison-panel" id="panel-mixed-parts" role="tabpanel" aria-labelledby="tab-mixed-parts" tabindex="0" hidden><div class="comparison-item"><p class="comparison-label">Initial task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Mixed Parts: Initial task"><img src="assets/similarity/mixed-parts-reference.png" width="1800" height="1350" alt="Mixed Parts: Initial task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Similar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Mixed Parts: Similar task"><img src="assets/similarity/mixed-parts-similar.png" width="1800" height="1350" alt="Mixed Parts: Similar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><div class="comparison-item"><p class="comparison-label">Dissimilar task</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Mixed Parts: Dissimilar task"><img src="assets/similarity/mixed-parts-dissimilar.png" width="1800" height="1350" alt="Mixed Parts: Dissimilar task" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure></div><p class="comparison-note">The third scene has a different distribution of part types across workspaces and does not match the initial task in the recorded retrieval result.</p></div></div>
+    <div class="prose similarity-prose" data-source="similar-tasks"><p>Tasks of the same type share their objective, robots, and constraints, while target objects and obstacle layouts can vary. The extended MeCoBench uses scene similarity to compare each new task with the cache of successfully executed tasks, using a common measure across all nine tasks. It supports three settings:</p><ul class="source-list"><li><strong>Random (S1)</strong>: the layout of a new task is randomly generated without any constraint on its scene similarity to the cached tasks, emulating practical applications where similar and dissimilar tasks arrive in a mixed manner.</li><li><strong>Similar (S2)</strong>: a new task must be similar to at least one cached task, i.e., there exists <math xmlns="http://www.w3.org/1998/Math/MathML" data-tex="T_k \in \mathcal{M}"><msub><mi>T</mi><mi>k</mi></msub><mo>∈</mo><mi>ℳ</mi></math> such that <math xmlns="http://www.w3.org/1998/Math/MathML" data-tex="\mathrm{Sim}_{\mathrm{sc}}(T, T_k) \ge \tau_{\mathrm{sim}}"><msub><mi mathvariant="normal">Sim</mi><mi mathvariant="normal">sc</mi></msub><mo>(</mo><mi>T</mi><mo>,</mo><msub><mi>T</mi><mi>k</mi></msub><mo>)</mo><mo>≥</mo><msub><mi>τ</mi><mi mathvariant="normal">sim</mi></msub></math>. This setting examines the benefit a method can obtain by fully exploiting task similarity.</li><li><strong>Different (S3)</strong>: a new task is dissimilar to all cached tasks, i.e., <math xmlns="http://www.w3.org/1998/Math/MathML" data-tex="\mathrm{Sim}_{\mathrm{sc}}(T, T_k) &lt; \tau_{\mathrm{sim}}"><msub><mi mathvariant="normal">Sim</mi><mi mathvariant="normal">sc</mi></msub><mo>(</mo><mi>T</mi><mo>,</mo><msub><mi>T</mi><mi>k</mi></msub><mo>)</mo><mo>&lt;</mo><msub><mi>τ</mi><mi mathvariant="normal">sim</mi></msub></math> for every <math xmlns="http://www.w3.org/1998/Math/MathML" data-tex="T_k \in \mathcal{M}"><msub><mi>T</mi><mi>k</mi></msub><mo>∈</mo><mi>ℳ</mi></math>. This setting examines whether a method, in the absence of any reusable task, can promptly recognize this and turn to the LLMs for planning without introducing noticeable overhead.</li></ul><p>The three settings span situations from fully reusable to non-reusable, allowing a comprehensive evaluation of the effectiveness and efficiency of a method under different degrees of similarity.</p></div>
+  </div>
+</div></section>
+<section class="section method-section" id="method"><div class="container">
+  <h2>MeCo-Hi</h2>
+  <figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Figure 4"><img src="assets/figures/framework.webp?v=a70964394eea" width="2832" height="1242" alt="Figure 4" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Hierarchical retrieval, S-Planner, validation, execution, and selective caching.</p>
+  <div class="prose" data-source="method"><p>We propose MeCo-Hi, a hierarchical similarity-aware multi-robot collaboration framework. When a new task arrives, MeCo-Hi first searches for a similar task in the task cache <math xmlns="http://www.w3.org/1998/Math/MathML" data-tex="\mathcal{M}"><mi>ℳ</mi></math>. The search proceeds hierarchically, following the correlation between the two levels of similarity. Scene similarity is evaluated over the whole cache to select a candidate set. Trajectory similarity is then computed only for these candidates, among which the one with the highest trajectory similarity is taken as the similar task. Since the expensive computation of trajectory similarity is restricted to a few candidates, the retrieval cost grows slowly as the cache grows.</p><p>If no similar task is found, the LLMs plan the task from its description. Otherwise, the similar motion planner, namely S-Planner, plans the current task by reusing the plan of the similar task without invoking the LLMs. At the high level, S-Planner transfers the action sequence and the robot assignment of the similar task according to target re-matching. At the low level, it extracts the valid segments of the reference trajectories to guide motion planning. In either case, the task is decomposed into subtasks, and each subtask is assigned a 3D waypoint path. Every generated plan is then validated by inverse kinematics and collision checking. If the validation fails, the failure reason is fed back to the LLMs for replanning. In particular, when a plan produced by S-Planner fails, the continuous planning module lets the LLMs resume from the failed step rather than restart from scratch, so that the effort already spent on reuse is preserved. Once all validations are passed, the low-level motion planner interpolates the waypoints into trajectories, which are executed by the robots in the environment.</p><p>After a task is successfully executed, the selective caching module decides whether to store it in <math xmlns="http://www.w3.org/1998/Math/MathML" data-tex="\mathcal{M}"><mi>ℳ</mi></math>. Only plans that meet the execution-efficiency requirement are admitted, which prevents redundant steps from propagating to subsequent tasks. Under a bounded capacity, frequently referenced tasks are retained, which keeps the cache compact while preserving its diversity. MeCo-Hi thereby forms a retrieval–reuse–caching loop, in which every solved task makes the next similar task cheaper to plan. As the loop wraps around the planning process rather than replacing it, MeCo-Hi integrates with existing LLM-empowered multi-robot methods in a plug-and-play manner.</p></div>
+</div></section>
+<section class="section evaluation-section" id="evaluation"><div class="container">
+  <h2>Evaluation</h2>
+  <div class="prose evaluation-intro"><p>The paper evaluates five LLM planners with and without MeCo-Hi in MuJoCo, using GPT-5.6-luna and DeepSeek-v4-flash. Results are averaged over 20 random seeds. The three metrics are task success rate, planning time, and token consumption.</p></div>
+  <h3>Random setting (S1)</h3>
+  <div class="table-scroll" tabindex="0" role="region" aria-label="(a) GPT-5.6-luna">
+<table class="results-table">
+<caption>(a) GPT-5.6-luna</caption>
+<colgroup><col class="task-column"><col class="metric-column"></colgroup><colgroup span="2"></colgroup><colgroup span="2"></colgroup><colgroup span="2"></colgroup><colgroup span="2"></colgroup>
+<thead><tr><th rowspan="2" colspan="2" scope="col">Task</th>
+<th id="s1-1-method-0" colspan="2" scope="colgroup">RoCo</th>
+<th id="s1-1-method-1" colspan="2" scope="colgroup">CaPo</th>
+<th id="s1-1-method-2" colspan="2" scope="colgroup">HMAS-2</th>
+<th id="s1-1-method-3" colspan="2" scope="colgroup">ReAct</th>
+</tr><tr>
+<th id="s1-1-variant-0" headers="s1-1-method-0" scope="col" class="original">Original</th>
+<th id="s1-1-variant-1" headers="s1-1-method-0" scope="col" class="enhanced">+MeCo-Hi</th>
+<th id="s1-1-variant-2" headers="s1-1-method-1" scope="col" class="original">Original</th>
+<th id="s1-1-variant-3" headers="s1-1-method-1" scope="col" class="enhanced">+MeCo-Hi</th>
+<th id="s1-1-variant-4" headers="s1-1-method-2" scope="col" class="original">Original</th>
+<th id="s1-1-variant-5" headers="s1-1-method-2" scope="col" class="enhanced">+MeCo-Hi</th>
+<th id="s1-1-variant-6" headers="s1-1-method-3" scope="col" class="original">Original</th>
+<th id="s1-1-variant-7" headers="s1-1-method-3" scope="col" class="enhanced">+MeCo-Hi</th>
+</tr></thead>
+<tbody><tr class="success-row">
+<th id="s1-1-task-0" class="task-name" rowspan="2" scope="rowgroup">Move Rope</th>
+<th id="s1-1-task-0-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-0 s1-1-variant-0" class="original">0.74 ± 0.08</td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.91 ± 0.07</strong></td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-1 s1-1-variant-2" class="original">0.51 ± 0.08</td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.88 ± 0.05</strong></td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-2 s1-1-variant-4" class="original">0.05 ± 0.03</td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.69 ± 0.02</strong></td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-3 s1-1-variant-6" class="original">0.67 ± 0.05</td>
+<td headers="s1-1-task-0 s1-1-task-0-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.94 ± 0.04</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-0-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-0 s1-1-variant-0" class="original">2.26, 3.32</td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>1.30</strong>, <strong>0.94</strong></td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-1 s1-1-variant-2" class="original">4.19, 4.92</td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>1.85</strong>, <strong>1.56</strong></td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-2 s1-1-variant-4" class="original">4.97, 43.71</td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>2.11</strong>, <strong>14.22</strong></td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-3 s1-1-variant-6" class="original">1.80, 1.90</td>
+<td headers="s1-1-task-0 s1-1-task-0-cost s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>1.17</strong>, <strong>0.27</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-1" class="task-name" rowspan="2" scope="rowgroup">Pack Grocery</th>
+<th id="s1-1-task-1-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-0 s1-1-variant-0" class="original">0.23 ± 0.07</td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.37 ± 0.05</strong></td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-1 s1-1-variant-2" class="original">0.19 ± 0.07</td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.35 ± 0.09</strong></td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-2 s1-1-variant-4" class="original">0.48 ± 0.05</td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.50 ± 0.00</strong></td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-3 s1-1-variant-6" class="original">0.42 ± 0.07</td>
+<td headers="s1-1-task-1 s1-1-task-1-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.44 ± 0.04</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-1-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-0 s1-1-variant-0" class="original">5.48, 16.15</td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>4.08</strong>, <strong>11.74</strong></td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-1 s1-1-variant-2" class="original">9.13, 15.17</td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>7.33</strong>, <strong>11.29</strong></td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-2 s1-1-variant-4" class="original"><strong>5.56</strong>, 26.40</td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-2 s1-1-variant-5" class="enhanced">7.93, <strong>15.94</strong></td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-3 s1-1-variant-6" class="original"><strong>4.15</strong>, 8.11</td>
+<td headers="s1-1-task-1 s1-1-task-1-cost s1-1-method-3 s1-1-variant-7" class="enhanced">4.56, <strong>7.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-2" class="task-name" rowspan="2" scope="rowgroup">Make Sandwich</th>
+<th id="s1-1-task-2-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-0 s1-1-variant-0" class="original">0.58 ± 0.11</td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-1 s1-1-variant-2" class="original">0.78 ± 0.09</td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-2 s1-1-variant-4" class="original">0.90 ± 0.03</td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-3 s1-1-variant-6" class="original">0.90 ± 0.06</td>
+<td headers="s1-1-task-2 s1-1-task-2-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-2-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-0 s1-1-variant-0" class="original">1.54, 2.43</td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-1 s1-1-variant-2" class="original">2.56, 5.70</td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-2 s1-1-variant-4" class="original">1.62, 3.09</td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-3 s1-1-variant-6" class="original">1.45, 1.30</td>
+<td headers="s1-1-task-2 s1-1-task-2-cost s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-3" class="task-name" rowspan="2" scope="rowgroup">Sort Cubes</th>
+<th id="s1-1-task-3-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-0 s1-1-variant-0" class="original">0.43 ± 0.08</td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-1 s1-1-variant-2" class="original">0.89 ± 0.11</td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-2 s1-1-variant-4" class="original">0.81 ± 0.06</td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-3 s1-1-variant-6" class="original">0.73 ± 0.07</td>
+<td headers="s1-1-task-3 s1-1-task-3-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-3-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-0 s1-1-variant-0" class="original">1.99, 5.22</td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-1 s1-1-variant-2" class="original">2.12, 7.22</td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-2 s1-1-variant-4" class="original">1.72, 3.89</td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-3 s1-1-variant-6" class="original">1.25, 1.96</td>
+<td headers="s1-1-task-3 s1-1-task-3-cost s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-4" class="task-name" rowspan="2" scope="rowgroup">Sweep Floor</th>
+<th id="s1-1-task-4-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-0 s1-1-variant-0" class="original">0.86 ± 0.06</td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-1 s1-1-variant-2" class="original">0.31 ± 0.05</td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-2 s1-1-variant-4" class="original">0.91 ± 0.05</td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-3 s1-1-variant-6" class="original">0.95 ± 0.04</td>
+<td headers="s1-1-task-4 s1-1-task-4-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-4-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-0 s1-1-variant-0" class="original">1.49, 1.36</td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-1 s1-1-variant-2" class="original">2.60, 9.31</td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-2 s1-1-variant-4" class="original">1.81, 3.18</td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-3 s1-1-variant-6" class="original">1.53, 1.12</td>
+<td headers="s1-1-task-4 s1-1-task-4-cost s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-5" class="task-name" rowspan="2" scope="rowgroup">Arrange Cabinet</th>
+<th id="s1-1-task-5-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-0 s1-1-variant-0" class="original">0.95 ± 0.04</td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-1 s1-1-variant-2" class="original">1.00 ± 0.00</td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-2 s1-1-variant-4" class="original">1.00 ± 0.00</td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-3 s1-1-variant-6" class="original">1.00 ± 0.00</td>
+<td headers="s1-1-task-5 s1-1-task-5-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-5-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-0 s1-1-variant-0" class="original">1.46, 2.41</td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-1 s1-1-variant-2" class="original">2.15, 7.02</td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-2 s1-1-variant-4" class="original">1.28, 1.47</td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-3 s1-1-variant-6" class="original">1.12, 0.41</td>
+<td headers="s1-1-task-5 s1-1-task-5-cost s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-6" class="task-name" rowspan="2" scope="rowgroup">Mixed Parts</th>
+<th id="s1-1-task-6-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-0 s1-1-variant-0" class="original">0.63 ± 0.06</td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.83 ± 0.05</strong></td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-1 s1-1-variant-2" class="original">0.50 ± 0.05</td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.84 ± 0.04</strong></td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-2 s1-1-variant-4" class="original">0.45 ± 0.06</td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.79 ± 0.04</strong></td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-3 s1-1-variant-6" class="original">0.60 ± 0.05</td>
+<td headers="s1-1-task-6 s1-1-task-6-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.83 ± 0.05</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-6-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-0 s1-1-variant-0" class="original">6.33, 23.56</td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>5.50</strong>, <strong>6.19</strong></td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-1 s1-1-variant-2" class="original">11.39, 45.27</td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>6.89</strong>, <strong>13.45</strong></td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-2 s1-1-variant-4" class="original">6.52, 37.51</td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>5.57</strong>, <strong>8.28</strong></td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-3 s1-1-variant-6" class="original"><strong>5.02</strong>, 10.26</td>
+<td headers="s1-1-task-6 s1-1-task-6-cost s1-1-method-3 s1-1-variant-7" class="enhanced">5.46, <strong>3.18</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-7" class="task-name" rowspan="2" scope="rowgroup">Install Window</th>
+<th id="s1-1-task-7-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-0 s1-1-variant-0" class="original">0.09 ± 0.02</td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.72 ± 0.02</strong></td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-1 s1-1-variant-2" class="original">0.16 ± 0.07</td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.77 ± 0.02</strong></td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-2 s1-1-variant-4" class="original">0.04 ± 0.05</td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.70 ± 0.00</strong></td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-3 s1-1-variant-6" class="original">0.17 ± 0.12</td>
+<td headers="s1-1-task-7 s1-1-task-7-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.72 ± 0.04</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-7-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-0 s1-1-variant-0" class="original"><strong>10.69</strong>, 36.12</td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-0 s1-1-variant-1" class="enhanced">11.30, <strong>6.63</strong></td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-1 s1-1-variant-2" class="original">19.52, 91.56</td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>12.00</strong>, <strong>12.16</strong></td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-2 s1-1-variant-4" class="original">14.87, 65.23</td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>11.44</strong>, <strong>21.55</strong></td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-3 s1-1-variant-6" class="original"><strong>11.22</strong>, 33.61</td>
+<td headers="s1-1-task-7 s1-1-task-7-cost s1-1-method-3 s1-1-variant-7" class="enhanced">11.33, <strong>5.36</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-1-task-8" class="task-name" rowspan="2" scope="rowgroup">Kitting</th>
+<th id="s1-1-task-8-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-0 s1-1-variant-0" class="original">0.44 ± 0.04</td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-1 s1-1-variant-2" class="original">0.58 ± 0.09</td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-2 s1-1-variant-4" class="original">0.42 ± 0.06</td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>0.89 ± 0.02</strong></td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-3 s1-1-variant-6" class="original">0.36 ± 0.10</td>
+<td headers="s1-1-task-8 s1-1-task-8-success s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-1-task-8-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-0 s1-1-variant-0" class="original">7.57, 21.17</td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-0 s1-1-variant-1" class="enhanced"><strong>4.55</strong>, <strong>2.77</strong></td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-1 s1-1-variant-2" class="original">8.27, 44.01</td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-1 s1-1-variant-3" class="enhanced"><strong>4.46</strong>, <strong>3.14</strong></td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-2 s1-1-variant-4" class="original">8.52, 47.52</td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-2 s1-1-variant-5" class="enhanced"><strong>3.97</strong>, <strong>6.00</strong></td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-3 s1-1-variant-6" class="original">8.10, 30.92</td>
+<td headers="s1-1-task-8 s1-1-task-8-cost s1-1-method-3 s1-1-variant-7" class="enhanced"><strong>4.01</strong>, <strong>2.90</strong></td>
+</tr></tbody>
+</table></div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="(b) DeepSeek-v4-flash">
+<table class="results-table">
+<caption>(b) DeepSeek-v4-flash</caption>
+<colgroup><col class="task-column"><col class="metric-column"></colgroup><colgroup span="2"></colgroup><colgroup span="2"></colgroup><colgroup span="2"></colgroup><colgroup span="2"></colgroup>
+<thead><tr><th rowspan="2" colspan="2" scope="col">Task</th>
+<th id="s1-2-method-0" colspan="2" scope="colgroup">RoCo</th>
+<th id="s1-2-method-1" colspan="2" scope="colgroup">CaPo</th>
+<th id="s1-2-method-2" colspan="2" scope="colgroup">HMAS-2</th>
+<th id="s1-2-method-3" colspan="2" scope="colgroup">ReAct</th>
+</tr><tr>
+<th id="s1-2-variant-0" headers="s1-2-method-0" scope="col" class="original">Original</th>
+<th id="s1-2-variant-1" headers="s1-2-method-0" scope="col" class="enhanced">+MeCo-Hi</th>
+<th id="s1-2-variant-2" headers="s1-2-method-1" scope="col" class="original">Original</th>
+<th id="s1-2-variant-3" headers="s1-2-method-1" scope="col" class="enhanced">+MeCo-Hi</th>
+<th id="s1-2-variant-4" headers="s1-2-method-2" scope="col" class="original">Original</th>
+<th id="s1-2-variant-5" headers="s1-2-method-2" scope="col" class="enhanced">+MeCo-Hi</th>
+<th id="s1-2-variant-6" headers="s1-2-method-3" scope="col" class="original">Original</th>
+<th id="s1-2-variant-7" headers="s1-2-method-3" scope="col" class="enhanced">+MeCo-Hi</th>
+</tr></thead>
+<tbody><tr class="success-row">
+<th id="s1-2-task-0" class="task-name" rowspan="2" scope="rowgroup">Move Rope</th>
+<th id="s1-2-task-0-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-0 s1-2-variant-0" class="original">0.54 ± 0.10</td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.91 ± 0.04</strong></td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-1 s1-2-variant-2" class="original">0.44 ± 0.09</td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.83 ± 0.05</strong></td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-2 s1-2-variant-4" class="original">0.61 ± 0.06</td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.92 ± 0.04</strong></td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-3 s1-2-variant-6" class="original">0.64 ± 0.07</td>
+<td headers="s1-2-task-0 s1-2-task-0-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.97 ± 0.04</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-0-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-0 s1-2-variant-0" class="original">3.40, 18.89</td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>1.44</strong>, <strong>5.38</strong></td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-1 s1-2-variant-2" class="original">3.46, 8.81</td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>1.66</strong>, <strong>2.94</strong></td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-2 s1-2-variant-4" class="original">3.69, 6.76</td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>1.49</strong>, <strong>3.19</strong></td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-3 s1-2-variant-6" class="original">2.94, 5.71</td>
+<td headers="s1-2-task-0 s1-2-task-0-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>1.49</strong>, <strong>1.41</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-1" class="task-name" rowspan="2" scope="rowgroup">Pack Grocery</th>
+<th id="s1-2-task-1-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-0 s1-2-variant-0" class="original">0.13 ± 0.04</td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.28 ± 0.07</strong></td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-1 s1-2-variant-2" class="original">0.15 ± 0.07</td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.28 ± 0.10</strong></td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-2 s1-2-variant-4" class="original">0.30 ± 0.07</td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.37 ± 0.07</strong></td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-3 s1-2-variant-6" class="original">0.16 ± 0.05</td>
+<td headers="s1-2-task-1 s1-2-task-1-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.29 ± 0.04</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-1-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-0 s1-2-variant-0" class="original">6.86, 27.57</td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>5.06</strong>, <strong>16.35</strong></td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-1 s1-2-variant-2" class="original">5.24, 30.91</td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>4.93</strong>, <strong>15.66</strong></td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-2 s1-2-variant-4" class="original"><strong>8.64</strong>, 21.31</td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-2 s1-2-variant-5" class="enhanced">9.01, <strong>12.52</strong></td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-3 s1-2-variant-6" class="original">8.81, 21.01</td>
+<td headers="s1-2-task-1 s1-2-task-1-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>6.91</strong>, <strong>13.55</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-2" class="task-name" rowspan="2" scope="rowgroup">Make Sandwich</th>
+<th id="s1-2-task-2-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-0 s1-2-variant-0" class="original">0.74 ± 0.12</td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-1 s1-2-variant-2" class="original">0.82 ± 0.04</td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-2 s1-2-variant-4" class="original">0.83 ± 0.08</td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-3 s1-2-variant-6" class="original">0.84 ± 0.07</td>
+<td headers="s1-2-task-2 s1-2-task-2-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-2-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-0 s1-2-variant-0" class="original">1.96, 3.20</td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-1 s1-2-variant-2" class="original">2.52, 17.71</td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-2 s1-2-variant-4" class="original">2.10, 2.32</td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-3 s1-2-variant-6" class="original">2.01, 2.21</td>
+<td headers="s1-2-task-2 s1-2-task-2-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>1.38</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-3" class="task-name" rowspan="2" scope="rowgroup">Sort Cubes</th>
+<th id="s1-2-task-3-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-0 s1-2-variant-0" class="original">0.55 ± 0.09</td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-1 s1-2-variant-2" class="original">0.62 ± 0.08</td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-2 s1-2-variant-4" class="original">0.76 ± 0.09</td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-3 s1-2-variant-6" class="original">0.60 ± 0.06</td>
+<td headers="s1-2-task-3 s1-2-task-3-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-3-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-0 s1-2-variant-0" class="original">1.93, 9.76</td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-1 s1-2-variant-2" class="original">1.96, 22.39</td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-2 s1-2-variant-4" class="original">1.60, 4.45</td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-3 s1-2-variant-6" class="original">1.47, 7.64</td>
+<td headers="s1-2-task-3 s1-2-task-3-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.98</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-4" class="task-name" rowspan="2" scope="rowgroup">Sweep Floor</th>
+<th id="s1-2-task-4-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-0 s1-2-variant-0" class="original">0.70 ± 0.07</td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-1 s1-2-variant-2" class="original">0.23 ± 0.04</td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-2 s1-2-variant-4" class="original">0.51 ± 0.09</td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-3 s1-2-variant-6" class="original">0.60 ± 0.15</td>
+<td headers="s1-2-task-4 s1-2-task-4-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-4-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-0 s1-2-variant-0" class="original">1.90, 3.01</td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-1 s1-2-variant-2" class="original">3.00, 28.16</td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-2 s1-2-variant-4" class="original">2.09, 3.79</td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-3 s1-2-variant-6" class="original">1.63, 2.25</td>
+<td headers="s1-2-task-4 s1-2-task-4-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.95</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-5" class="task-name" rowspan="2" scope="rowgroup">Arrange Cabinet</th>
+<th id="s1-2-task-5-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-0 s1-2-variant-0" class="original">0.98 ± 0.02</td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-1 s1-2-variant-2" class="original">0.98 ± 0.02</td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-2 s1-2-variant-4" class="original">0.92 ± 0.02</td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-3 s1-2-variant-6" class="original">0.92 ± 0.04</td>
+<td headers="s1-2-task-5 s1-2-task-5-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>1.00 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-5-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-0 s1-2-variant-0" class="original">1.45, 2.52</td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-1 s1-2-variant-2" class="original">2.35, 26.09</td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-2 s1-2-variant-4" class="original">1.67, 2.26</td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-3 s1-2-variant-6" class="original">1.56, 2.93</td>
+<td headers="s1-2-task-5 s1-2-task-5-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.91</strong>, <strong>0.00</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-6" class="task-name" rowspan="2" scope="rowgroup">Mixed Parts</th>
+<th id="s1-2-task-6-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-0 s1-2-variant-0" class="original">0.34 ± 0.07</td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.80 ± 0.05</strong></td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-1 s1-2-variant-2" class="original">0.62 ± 0.09</td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.84 ± 0.04</strong></td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-2 s1-2-variant-4" class="original">0.36 ± 0.07</td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.77 ± 0.02</strong></td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-3 s1-2-variant-6" class="original">0.15 ± 0.03</td>
+<td headers="s1-2-task-6 s1-2-task-6-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.74 ± 0.04</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-6-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-0 s1-2-variant-0" class="original">5.52, 18.03</td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>4.87</strong>, <strong>5.97</strong></td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-1 s1-2-variant-2" class="original">9.68, 51.10</td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>5.47</strong>, <strong>14.87</strong></td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-2 s1-2-variant-4" class="original">5.66, 26.85</td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>4.64</strong>, <strong>5.82</strong></td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-3 s1-2-variant-6" class="original">4.33, 10.47</td>
+<td headers="s1-2-task-6 s1-2-task-6-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>3.93</strong>, <strong>3.40</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-7" class="task-name" rowspan="2" scope="rowgroup">Install Window</th>
+<th id="s1-2-task-7-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-0 s1-2-variant-0" class="original">0.06 ± 0.04</td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.72 ± 0.02</strong></td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-1 s1-2-variant-2" class="original">0.27 ± 0.07</td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.77 ± 0.04</strong></td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-2 s1-2-variant-4" class="original">0.47 ± 0.04</td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.80 ± 0.00</strong></td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-3 s1-2-variant-6" class="original">0.00 ± 0.00</td>
+<td headers="s1-2-task-7 s1-2-task-7-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.70 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-7-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-0 s1-2-variant-0" class="original"><strong>10.80</strong>, 31.13</td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-0 s1-2-variant-1" class="enhanced">10.81, <strong>6.10</strong></td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-1 s1-2-variant-2" class="original">13.84, 89.94</td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>11.31</strong>, <strong>12.60</strong></td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-2 s1-2-variant-4" class="original">12.24, 21.99</td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>11.43</strong>, <strong>4.79</strong></td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-3 s1-2-variant-6" class="original"><strong>6.49</strong>, 42.72</td>
+<td headers="s1-2-task-7 s1-2-task-7-cost s1-2-method-3 s1-2-variant-7" class="enhanced">10.66, <strong>3.60</strong></td>
+</tr></tbody>
+<tbody><tr class="success-row">
+<th id="s1-2-task-8" class="task-name" rowspan="2" scope="rowgroup">Kitting</th>
+<th id="s1-2-task-8-success" class="metric-name" scope="row">Success rate</th>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-0 s1-2-variant-0" class="original">0.15 ± 0.10</td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-1 s1-2-variant-2" class="original">0.30 ± 0.05</td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-2 s1-2-variant-4" class="original">0.38 ± 0.05</td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-3 s1-2-variant-6" class="original">0.11 ± 0.09</td>
+<td headers="s1-2-task-8 s1-2-task-8-success s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>0.85 ± 0.00</strong></td>
+</tr><tr class="cost-row">
+<th id="s1-2-task-8-cost" class="metric-name" scope="row">Time, Tokens</th>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-0 s1-2-variant-0" class="original">6.00, 34.17</td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-0 s1-2-variant-1" class="enhanced"><strong>4.40</strong>, <strong>2.22</strong></td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-1 s1-2-variant-2" class="original">10.97, 42.90</td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-1 s1-2-variant-3" class="enhanced"><strong>4.40</strong>, <strong>3.08</strong></td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-2 s1-2-variant-4" class="original">11.05, 47.07</td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-2 s1-2-variant-5" class="enhanced"><strong>4.48</strong>, <strong>3.61</strong></td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-3 s1-2-variant-6" class="original">6.63, 49.79</td>
+<td headers="s1-2-task-8 s1-2-task-8-cost s1-2-method-3 s1-2-variant-7" class="enhanced"><strong>4.39</strong>, <strong>1.99</strong></td>
+</tr></tbody>
+</table></div>
+
+  <h3 class="s23-title">Similar (S2) and different (S3) settings</h3>
+  <figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Figure 7"><img src="assets/figures/evaluation-s2-s3-paper-current.webp?v=aac4e9d376b9" width="2808" height="1644" alt="Figure 7" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Results in S2 and S3 using DeepSeek-v4-flash, averaged over 20 random seeds.</p>
+  <details class="paper-experiment"><summary>Comparison with MeCo</summary><div class="experiment-body"><p class="prose">With RoCo as the planner and DeepSeek-v4-flash as the LLM, MeCo-Hi raises the average success rate across five tasks from 69.2% to 80.8% compared with MeCo. Planning time falls by 36% on Move Rope and 32% on Pack Grocery; Make Sandwich and Sort Cubes incur small additional costs of 24 s and 10 s.</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Figure 8"><img src="assets/figures/meco-comparison.webp?v=7c6903309dea" width="2808" height="630" alt="Figure 8" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Random setting (S1), averaged over 20 random seeds.</p></div></details><details class="paper-experiment"><summary>Ablation studies</summary><div class="experiment-body"><p class="prose">Removing scene similarity makes retrieval more expensive, while removing trajectory similarity lowers reuse reliability. S-Planner transfers valid trajectory segments; continuous planning preserves progress when reuse fails. Selective caching retains efficient plans and avoids propagating redundant steps.</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Table 3"><img src="assets/figures/ablation-components.webp?v=7dde47fcd947" width="2160" height="804" alt="Table 3" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Ablations of scene similarity, trajectory similarity, S-Planner, and continuous planning. Time is in 10² s; tokens are in 10⁴.</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Figure 9"><img src="assets/figures/ablation-cache.webp?v=28475f613559" width="2808" height="624" alt="Figure 9" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Selective caching ablation, averaged over 20 random seeds using DeepSeek-v4-flash.</p></div></details><details class="paper-experiment"><summary>Performance vs. cache size</summary><div class="experiment-body"><p class="prose">Across the tested cache sizes, more cached tasks generally improve success rates and reduce token consumption. Hierarchical retrieval limits expensive trajectory checks to a small candidate set, and the paper observes no planning-time rebound across the five evaluated tasks.</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Figure 10"><img src="assets/figures/cache-size.webp?v=67081067daef" width="2808" height="1302" alt="Figure 10" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">RoCo planner with DeepSeek-v4-flash, averaged over 20 random seeds.</p></div></details><details class="paper-experiment"><summary>Additional results: Central Plan and two S2 tasks</summary><div class="experiment-body"><p class="prose">The appendix reports Central Plan with and without MeCo-Hi on all nine tasks, as well as Sweep Floor and Arrange Cabinet in the similar setting (S2).</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Table 4"><img src="assets/figures/central-plan.webp?v=4f7324f1b913" width="2808" height="1344" alt="Table 4" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Central Plan in S1 with both LLMs. Time is in 10² s; tokens are in 10⁴.</p><figure class="research-figure "><button type="button" class="figure-button" data-zoom aria-label="Enlarge Figure 11"><img src="assets/figures/sweep-cabinet-s2.webp?v=602ee151347a" width="2808" height="666" alt="Figure 11" loading="lazy" decoding="async"><span class="expand-icon" aria-hidden="true">⤢</span></button></figure><p class="figure-caption">Sweep Floor and Arrange Cabinet in S2, using DeepSeek-v4-flash.</p></div></details>
+</div></section>
+</main>
+<dialog class="figure-dialog" aria-labelledby="dialog-title"><div class="dialog-toolbar"><p id="dialog-title">Figure</p><div class="dialog-actions"><button type="button" id="zoom-toggle" aria-pressed="false">Actual size</button><button type="button" class="close-dialog" aria-label="Close">×</button></div></div><div class="dialog-stage"><img id="dialog-image" alt=""></div></dialog>
+<noscript><style>.video-play{display:none}.comparison-panel[hidden]{display:grid!important}.comparison-tabs{display:none}</style></noscript>
+<script>(() => {
+  'use strict';
+  const videos = [...document.querySelectorAll('video')];
+  const visibleVideos = new Set();
+  // Muted, inline playback is compatible with browser autoplay policies.
+  async function startVideo(video) {
+    const card = video.closest('.task-card');
+    const fallback = card.querySelector('[data-play]');
+    try {
+      await video.play();
+      fallback.hidden = true;
+      if (!visibleVideos.has(video) || document.hidden) video.pause();
+    } catch (error) {
+      if (visibleVideos.has(video)) fallback.hidden = false;
+    }
+  }
+  videos.forEach(video => {
+    video.muted = true;
+    video.pause();
+    video.addEventListener('error', () => {
+      const card = video.closest('.task-card');
+      card.querySelector('.video-status').textContent = 'Video unavailable.';
+      card.querySelector('[data-play]').hidden = false;
+    });
+  });
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+          visibleVideos.add(video);
+          if (!document.hidden) startVideo(video);
+        } else {
+          visibleVideos.delete(video);
+          video.pause();
+        }
+      }
+    }, {threshold: 0.15});
+    videos.forEach(video => observer.observe(video));
+  } else {
+    videos.forEach(video => { visibleVideos.add(video); startVideo(video); });
+  }
+  document.addEventListener('visibilitychange', () => {
+    videos.forEach(video => {
+      if (document.hidden) video.pause();
+      else if (visibleVideos.has(video)) startVideo(video);
+    });
+  });
+  document.querySelectorAll('[data-play]').forEach(button => {
+    button.addEventListener('click', async () => {
+      const id = button.dataset.play;
+      const video = document.getElementById('video-' + id);
+      const status = button.closest('.task-card').querySelector('.video-status');
+      button.disabled = true;
+      status.textContent = '';
+      try {
+        video.controls = true;
+        await video.play();
+        button.hidden = true;
+        video.tabIndex = 0;
+        video.focus({preventScroll: true});
+      } catch (error) {
+        status.textContent = 'Video unavailable.';
+      } finally { button.disabled = false; }
+    });
+  });
+  document.querySelectorAll('[data-resource]').forEach(link => {
+    if (link.getAttribute('href')) link.removeAttribute('aria-disabled');
+    link.addEventListener('click', event => {
+      if (!link.getAttribute('href')) event.preventDefault();
+    });
+  });
+  const tabs = [...document.querySelectorAll('[role="tab"]')];
+  function selectTab(tab, focus = false) {
+    tabs.forEach(item => {
+      const active = item === tab;
+      item.setAttribute('aria-selected', String(active));
+      item.tabIndex = active ? 0 : -1;
+      document.getElementById(item.getAttribute('aria-controls')).hidden = !active;
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', event => {
+      let next = index;
+      if (event.key === 'ArrowRight') next = (index + 1) % tabs.length;
+      else if (event.key === 'ArrowLeft') next = (index + tabs.length - 1) % tabs.length;
+      else if (event.key === 'Home') next = 0;
+      else if (event.key === 'End') next = tabs.length - 1;
+      else return;
+      event.preventDefault(); selectTab(tabs[next], true);
+    });
+  });
+  const dialog = document.querySelector('.figure-dialog');
+  const dialogImage = document.getElementById('dialog-image');
+  const stage = dialog.querySelector('.dialog-stage');
+  const zoomToggle = document.getElementById('zoom-toggle');
+  let figureOpener;
+  document.querySelectorAll('[data-zoom]').forEach(button => {
+    button.addEventListener('click', () => {
+      const source = button.querySelector('img');
+      figureOpener = button;
+      dialogImage.src = source.currentSrc || source.src;
+      dialogImage.alt = source.alt;
+      document.getElementById('dialog-title').textContent = source.alt;
+      stage.classList.remove('actual-size');
+      stage.scrollTop = 0; stage.scrollLeft = 0;
+      zoomToggle.textContent = 'Actual size';
+      zoomToggle.setAttribute('aria-pressed', 'false');
+      dialog.showModal();
+      document.body.style.overflow = 'hidden';
+      dialog.querySelector('.close-dialog').focus();
+    });
+  });
+  zoomToggle.addEventListener('click', () => {
+    const actual = stage.classList.toggle('actual-size');
+    zoomToggle.textContent = actual ? 'Fit to screen' : 'Actual size';
+    zoomToggle.setAttribute('aria-pressed', String(actual));
+  });
+  dialog.querySelector('.close-dialog').addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', event => {
+    const r = dialog.getBoundingClientRect();
+    if (event.target === dialog && (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom)) dialog.close();
+  });
+  dialog.addEventListener('close', () => {
+    document.body.style.overflow = '';
+    if (figureOpener) figureOpener.focus({preventScroll: true});
+  });
+  const navLinks = [...document.querySelectorAll('.nav-links a')];
+  const sections = navLinks.map(link => document.querySelector(link.getAttribute('href')));
+  let scrollQueued = false;
+  function updateNavigation() {
+    let active = null;
+    for (const section of sections) if (section.getBoundingClientRect().top <= 160) active = section;
+    navLinks.forEach(link => {
+      if (active && link.getAttribute('href') === '#' + active.id) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+    scrollQueued = false;
+  }
+  addEventListener('scroll', () => {
+    if (!scrollQueued) { scrollQueued = true; requestAnimationFrame(updateNavigation); }
+  }, {passive: true});
+  updateNavigation();
+})();
+</script>
+</body>
+</html>
